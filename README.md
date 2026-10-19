@@ -22,7 +22,7 @@ The clean image is built from those facts plus the code/geometry the decomp repr
 | Text in UI images (525) | the words and their colours (`spec/labels.json`) | re-typeset |
 | JPEG backgrounds (107) | size, 16×16 colour grid | new baseline JPEGs in the game's segment layout (`jpegs.py`) |
 | Instrument, drum and effect samples (582) | length, rate, loop points, a coarse spectral outline | resynthesised; our own VADPCM codebooks and loop states (`audio.py`) |
-| Speech clips (1387, GSM 06.10 frames) | frame count, the words, one median pitch, a coarse outline | placeholder text-to-speech performance of the words (not the original announcer), cries resynthesised from outlines; encoded with our own GSM encoder (`cleanroom/codec/gsm610.py`, `voices.py`) |
+| Speech clips (1387, GSM 06.10 frames) | frame count, one median pitch, a coarse outline (the words were a Whisper transcript, `spec/voice_lines.json`; removed 2026-10-19, see below) | placeholder text-to-speech performance of the words (not the original announcer), cries resynthesised from outlines; encoded with our own GSM encoder (`cleanroom/codec/gsm610.py`, `voices.py`) |
 | Music and effect sequences, soundfont parameters | kept (note events) | played by the resynthesised instruments |
 | Game Boy Tower data (206 blobs) | size | blanked: it only runs with a real cartridge in a Transfer Pak |
 | Models, animation, text, scripts, tables | kept (code / geometry / text) | — |
@@ -57,3 +57,10 @@ Third-party runtime: EmulatorJS (GPL-3.0) and the libretro mupen64plus-next core
 
 Pokémon and Pokémon Stadium are trademarks of Nintendo / Creatures / GAME FREAK. This is an unofficial,
 non-commercial preservation and research project.
+
+## 2026-10-19: transcripts removed
+
+`games/pokestadium2/spec/voice_lines.json` held Whisper transcripts of the retail announcer and was removed.
+The placeholder TTS clips in the current build were spoken from those transcripts, so their wording is retail
+wording; they stay until the commentary is rewritten. `voices.py` / `mort.py` need a new, transcript-free line
+list before they can run again. The file is still in git history (to be purged with the history rewrite).

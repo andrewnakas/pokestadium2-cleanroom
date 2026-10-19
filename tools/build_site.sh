@@ -13,6 +13,9 @@ PY
 mkdir -p "$SITE"
 find "$SITE" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 cp -r "$EJS/data" "$SITE/data"
+# libunrar (RARLab licence, not GPL-compatible) is never shipped: the site loads game.zip, not a RAR
+rm -f "$SITE/data/compression/libunrar.js" "$SITE/data/compression/libunrar.wasm"
+printf '# Compression Libraries\n\nThe EmulatorJS 4.2.3 zip and 7z extractors are kept. libunrar (RARLab unrar licence,\nnot GPL-compatible) was removed: this site ships game.zip and never loads a RAR archive.\n' > "$SITE/data/compression/README.md"
 cp ports/ejs/index.html "$SITE/index.html"
 python -c "import sys,zipfile; z=zipfile.ZipFile(sys.argv[2],'w',zipfile.ZIP_DEFLATED,compresslevel=9); z.write(sys.argv[1],'game.z64'); z.close()" "$ROM" "$SITE/game.zip"
 python ports/ejs/patch_core.py "$ROM" "$EJS/data/cores" "$SITE/data/cores"
